@@ -5,7 +5,7 @@ let news = [];
 
 
 const getLatestNews = async() => {
-    const url = new URL(`https://playful-bienenstitch-9af164.netlify.app/top-headlines?`);
+    const url = new URL(`https://playful-bienenstitch-9af164.netlify.app/top-headlines`);
     const response = await fetch(url);
     const data = response.json(); // json은 파일 형식 중 하나.
     news = data.articles;

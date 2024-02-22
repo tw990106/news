@@ -34,10 +34,9 @@
                 <span class="nav-icon" onclick="openNav()"><i class="fa-solid fa-bars"></i></span>
                 <span class="search-icon" onclick="toggleSearch()"><i class="fa-solid fa-magnifying-glass"></i></span>
                 <div id="search-area">
-                    <form action="index.html">
-                        <input type="search" name="search">
-                        <input type="submit" value="GO!">
-                    </form>
+                    <input type="search" name="search" id="search-input">
+                    <button onclick="getNewsByKeyword()"></button>
+                    <input type="submit" value="GO!" onclick="getNewsByKeyword()">
             </div>
             <div class="head-line">
                 <svg viewBox="0 0 184 25" fill="#000" aria-hidden="true">
@@ -45,21 +44,13 @@
                 </svg>
             </div>
             <div class="menus">
-                <button>Sport</button>
-                <button>Tech</button>
-                <button>World</button>
-                <button>Finance</button>
-                <button>Politics</button>
                 <button>Business</button>
-                <button>Economics</button>
                 <button>Entertainment</button>
-                <button>Beauty</button>
-                <button>Travel</button>
-                <button>Music</button>
-                <button>Food</button>
+                <button>General</button>
+                <button>Health</button>
                 <button>Science</button>
-                <button>Gaming</button>
-                <button>Energy</button>
+                <button>Sports</button>
+                <button>Technology</button>
             </div>
         </section>
         <section id="news-board">

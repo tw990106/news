@@ -48,13 +48,13 @@
 #search-area input[type="search"]:focus{
     outline: none;
 }
-#search-area input[type="submit"]{
+#search-area button{
     background-color: #ebebe6;
     border: 1px solid #ebebe6;
     margin-left: 5px;
     padding: 0 4px;
 }
-#search-area input[type="submit"]:hover{
+#search-area button:hover{
     background-color: beige;
     border: 1px solid beige;
 }

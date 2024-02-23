@@ -1,44 +1,58 @@
+// http://times-node-env.eba-appvq3ef.ap-northeast-2.elasticbeanstalk.com/top-headlines
+
 const API_KEY = `fa3bf53b47ed4acebebefefbfc4c03e1`;
 let newsList = [];
 const menus = document.querySelectorAll('.menus button');
-menus.forEach(menu => menu.addEventListener("click", (event) => getNewsByCategory(event)))
+menus.forEach(menu => menu.addEventListener("click", (event) => getNewsByCategory(event)));
+let url = new URL(`https://playful-bienenstitch-9af164.netlify.app/top-headlines`);
 
-// http://times-node-env.eba-appvq3ef.ap-northeast-2.elasticbeanstalk.com/top-headlines
+const getNews = async () => {
+    try{
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if(response.status === 200){
+                if(data.articles.length === 0){
+                    throw new Error('검색어에 맞는 결과가 없습니다.');
+                }
+            newsList = data.articles;
+            render();
+        }else{
+            throw new Error(data.message);
+        }
+        
+    }catch(error){
+        console.log('error', error.message);
+        errorRender(error.message);
+    }
+    
+}
+
+
 
 
 const getLatestNews = async() => {
-    const url = new URL(`https://playful-bienenstitch-9af164.netlify.app/top-headlines`);
-    const response = await fetch(url);
-    const data = await response.json(); // json은 파일 형식 중 하나.
-    newsList = data.articles;
-    render();
-    console.log('ddd', newsList);
+    url = new URL(`https://playful-bienenstitch-9af164.netlify.app/top-headlines`);
+    
+    getNews();
 };
 
 const getNewsByCategory = async (event) => {
     const category = event.target.textContent.toLowerCase();
     console.log('category', category);
-    const url = new URL(`https://playful-bienenstitch-9af164.netlify.app/top-headlines?category=${category}`);
 
-    const response = await fetch(url);
-    const data = await response.json();
-    console.log('ddd', data);
+    url = new URL(`https://playful-bienenstitch-9af164.netlify.app/top-headlines?category=${category}`);
 
-    newsList = data.articles;
-    render();
+    getNews();
 }
 
 const getNewsByKeyword = async () => {
     const keyword = document.getElementById('search-input').value;
     console.log("keyword", keyword);
 
-    const url = new URL(`https://playful-bienenstitch-9af164.netlify.app/top-headlines?q=${keyword}`);
-    const response = await fetch(url);
-    const data = await response.json();
-    console.log('keyword data', data);
-
-    newsList = data.articles;
-    render();
+    url = new URL(`https://playful-bienenstitch-9af164.netlify.app/top-headlines?q=${keyword}`);
+    
+    getNews();
 }
 
 
@@ -89,10 +103,15 @@ const render = () => {
 
 
     document.getElementById('news-board').innerHTML = newsHTML;
+}
 
+const errorRender = (errorMessage) => {
+    const errorHTML = `<div class="alert alert-danger" role="alert">${errorMessage}</div>`;
 
+    document.getElementById('news-board').innerHTML = errorHTML;
 }
 
 
 getLatestNews();
+
 

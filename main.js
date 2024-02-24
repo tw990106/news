@@ -5,18 +5,29 @@ let newsList = [];
 const menus = document.querySelectorAll('.menus button');
 menus.forEach(menu => menu.addEventListener("click", (event) => getNewsByCategory(event)));
 let url = new URL(`https://playful-bienenstitch-9af164.netlify.app/top-headlines`);
+let totalResults = 0;
+let page = 1;
+const pageSize = 10;
+const groupSize = 5;
 
 const getNews = async () => {
     try{
+        url.searchParams.set('page', page); // &page=page
+        url.searchParams.set('pageSize', pageSize); // &pageSize=pageSize
+
         const response = await fetch(url);
         const data = await response.json();
+        
+        console.log('ddd', data);
 
         if(response.status === 200){
                 if(data.articles.length === 0){
                     throw new Error('검색어에 맞는 결과가 없습니다.');
                 }
             newsList = data.articles;
+            totalResults = data.totalResults;
             render();
+            pagiNationRender();
         }else{
             throw new Error(data.message);
         }
@@ -58,7 +69,7 @@ const getNewsByKeyword = async () => {
 
 // side menu open
 const openNav = () => {
-    document.getElementById("m-sideNav").style.width = "100%";
+    document.getElementById("m-sideNav").style.width = "45%";
 }
 // side menu close
 const closeNav = () => {
@@ -117,6 +128,38 @@ const errorRender = (errorMessage) => {
     document.getElementById('news-board').innerHTML = errorHTML;
 }
 
+const pagiNationRender = () => {
+    // totalResult
+    // page
+    // pageSize
+    // groupSize
+    // totalPages
+    const totalPages = Math.ceil(totalResults / pageSize);
+    // pageGroup
+    const pageGroup = Math.ceil(page / groupSize);
+    // lastPage
+    const lastPage = pageGroup * groupSize;
+    // 마지막 페이지 그룹이 그룹사이즈보다 작다? >> lastpage = totalPage
+    if(lastPage > totalPages){
+        lastPage = totalPages;
+    }
+    // firstPage
+    const firstPage = lastPage - (groupSize - 1)<=0? 1 : lastPage - (groupSize - 1);
+
+    let paginationHTML = ``;
+
+    for(let i=firstPage; i<=lastPage; i++){
+        paginationHTML += `<li class="page-item ${i===page?'active':''}" onclick="moveToPage(${i})"><a class="page-link">${i}</a></li>`;
+    }
+    document.querySelector('.pagination').innerHTML = paginationHTML;
+
+
+}
+const moveToPage = (pageNum) => {
+    console.log('click', pageNum);
+    page = pageNum;
+    getNews();
+}
 
 getLatestNews();
 

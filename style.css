@@ -203,6 +203,9 @@
     .search-icon{
         cursor: pointer;
     }
+    .news-txt *{
+        text-align: left;
+    }
     
 }
 
@@ -227,5 +230,7 @@
         top: 0px;
         display: none;
     }
-    
+    .news-txt *{
+        text-align: left;
+    }
 }
